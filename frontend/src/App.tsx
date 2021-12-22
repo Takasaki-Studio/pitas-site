@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import TerminalInputComponent from "./components/TerminalInput";
+import shell from "./system/shell";
 import style from "./App.module.css";
 
 const initialText = `
@@ -13,20 +14,42 @@ const initialText = `
 
 `;
 
-function App() {
-  const [commands, setCommands] = useState<string[]>([]);
+interface Command {
+  command: string;
+  response?: string;
+}
 
-  function addCommand(command: string) {
-    setCommands([...commands, command]);
+function App() {
+  const [commands, setCommands] = useState<Command[]>([]);
+  const inputTerminal = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    window.scroll(0, document.body.scrollHeight);
+    if (inputTerminal.current) inputTerminal.current.focus();
+  });
+
+  async function addCommand(command: string) {
+    const response = await shell(command);
+    setCommands([
+      ...commands,
+      {
+        command,
+        response,
+      },
+    ]);
   }
 
   return (
     <div>
       <p className={style.wrap}>{initialText}</p>
-      {commands.map((cmd) => (
-        <TerminalInputComponent>{cmd}</TerminalInputComponent>
+      {commands.map((cmd, index) => (
+        <>
+          <TerminalInputComponent key={index}>
+            {cmd.command}
+          </TerminalInputComponent>
+          {cmd.response && <span className={style.cmdOut}>{cmd.response}</span>}
+        </>
       ))}
-      <TerminalInputComponent onCommand={addCommand} />
+      <TerminalInputComponent onCommand={addCommand} ref={inputTerminal} />
     </div>
   );
 }

@@ -1,7 +1,5 @@
 async function shell(cmd: string): Promise<string> {
   try {
-    const;
-
     const item = await import(`./root/${cmd}`);
     return item.default();
   } catch {
