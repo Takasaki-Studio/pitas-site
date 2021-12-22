@@ -1,7 +1,22 @@
-async function shell(cmd: string): Promise<string> {
+import { Command } from "../App";
+
+export interface CliInterface {
+  stdout: (commands: Command[]) => void;
+  commands: Command[];
+}
+
+export type Execultor = (args: string[], cli: CliInterface) => string | void;
+
+async function shell(
+  cmd: string,
+  cli: CliInterface
+): Promise<string | undefined> {
+  if (!cmd) return;
   try {
-    const item = await import(`./root/${cmd}`);
-    return item.default();
+    const [command, ...args] = cmd.split(" ");
+
+    const item = await import(`./root/${command}`);
+    return item.default(args, cli);
   } catch {
     return `bash: ${cmd}: command not found...`;
   }

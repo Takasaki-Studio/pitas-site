@@ -14,7 +14,7 @@ const initialText = `
 
 `;
 
-interface Command {
+export interface Command {
   command: string;
   response?: string;
 }
@@ -28,26 +28,35 @@ function App() {
   });
 
   async function addCommand(command: string) {
-    const response = await shell(command);
-    setCommands([
-      ...commands,
-      {
-        command,
-        response,
+    let updatedCommands = false;
+
+    const response = await shell(command, {
+      commands,
+      stdout: (newCommands: Command[]) => {
+        updatedCommands = true;
+        setCommands(newCommands);
       },
-    ]);
+    });
+
+    if (!updatedCommands) {
+      setCommands([
+        ...commands,
+        {
+          command,
+          response,
+        },
+      ]);
+    }
   }
 
   return (
     <div>
       <p className={style.wrap}>{initialText}</p>
       {commands.map((cmd, index) => (
-        <>
-          <TerminalInputComponent key={index}>
-            {cmd.command}
-          </TerminalInputComponent>
+        <div key={index}>
+          <TerminalInputComponent>{cmd.command}</TerminalInputComponent>
           {cmd.response && <span className={style.cmdOut}>{cmd.response}</span>}
-        </>
+        </div>
       ))}
       <TerminalInputComponent onCommand={addCommand} ref={inputTerminal} />
     </div>
