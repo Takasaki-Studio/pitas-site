@@ -1,0 +1,31 @@
+.window {
+  position: absolute;
+  background-color: black;
+  border-color: #285577;
+  border-style: solid;
+  border-left-width: 2px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  border-top-style: none;
+  z-index: 1;
+}
+
+.titleBar {
+  width: 100%;
+  background-color: #285577;
+  height: 17px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.closeButton {
+  background-color: red;
+  width: 17px;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: -2px;
+}

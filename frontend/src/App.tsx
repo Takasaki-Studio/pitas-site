@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import TerminalInputComponent from "./components/TerminalInput";
+import XServerComponent from "./components/XServer";
 import shell from "./system/shell";
 import style from "./App.module.css";
 
@@ -51,6 +52,7 @@ function App() {
 
   return (
     <div>
+      <XServerComponent />
       <p className={style.wrap}>{initialText}</p>
       {commands.map((cmd, index) => (
         <div key={index}>
