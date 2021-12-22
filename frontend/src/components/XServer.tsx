@@ -1,29 +1,41 @@
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import WindowComponent, { WindowComponentProps } from "./Window";
 
-function XServerComponent() {
-  const [windows, setWindows] = useState<WindowComponentProps[]>([
-    {
-      content: <div>Hello World</div>,
-      pid: 1,
-      title: "Welcome to XServer",
-      height: 200,
-      width: 200,
-      x: 120,
-      y: 120,
-      primary: true,
+export interface RequestedWindow {
+  title: string;
+  content: JSX.Element;
+}
+
+export interface XServerRef {
+  addWindow: (window: RequestedWindow) => void;
+}
+
+export interface XServerProps {}
+
+function XServerComponent(
+  props: XServerProps,
+  ref: React.ForwardedRef<XServerRef>
+) {
+  const [windows, setWindows] = useState<WindowComponentProps[]>([]);
+  const [lastPid, setLastPid] = useState(0);
+  useImperativeHandle(ref, () => ({
+    addWindow: (window: RequestedWindow) => {
+      setWindows([
+        ...windows,
+        {
+          pid: lastPid + 1,
+          title: window.title,
+          content: window.content,
+          height: 200,
+          width: 200,
+          x: 150,
+          y: 150,
+          primary: false,
+        },
+      ]);
+      setLastPid(lastPid + 1);
     },
-    {
-      content: <div>Hello World</div>,
-      pid: 2,
-      title: "Welcome to XServer",
-      height: 200,
-      width: 200,
-      x: 120,
-      y: 120,
-      primary: false,
-    },
-  ]);
+  }));
 
   function onFocusHandler(pid: number) {
     const oldActivity = windows.find((window) => window.primary);
@@ -58,4 +70,4 @@ function XServerComponent() {
   );
 }
 
-export default XServerComponent;
+export default forwardRef<XServerRef, XServerProps>(XServerComponent);
