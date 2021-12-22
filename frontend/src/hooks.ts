@@ -7,7 +7,8 @@ export interface MouseData {
 }
 
 export interface MouseProps {
-  ref: React.RefObject<HTMLDivElement>;
+  mainRef: React.RefObject<HTMLDivElement>;
+  secondaryRef?: React.RefObject<HTMLDivElement>;
 }
 
 export function useMouseLocale(props: MouseProps) {
@@ -21,19 +22,23 @@ export function useMouseLocale(props: MouseProps) {
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
-    if (!props.ref.current) return;
+    if (!props.mainRef.current) return;
+
+    const referencia = props.secondaryRef || props.mainRef;
+
+    if (!referencia.current) return;
 
     function mouseDown(e: MouseEvent) {
+      if (!referencia.current) return;
       e.preventDefault();
-      if (!props.ref.current) return;
       setOffset([
-        e.clientX - props.ref.current.offsetLeft,
-        e.clientY - props.ref.current.offsetTop,
+        e.clientX - referencia.current.offsetLeft,
+        e.clientY - referencia.current.offsetTop,
       ]);
       setIsDragging(true);
     }
 
-    props.ref.current.addEventListener("mousedown", mouseDown, true);
+    props.mainRef.current.addEventListener("mousedown", mouseDown, true);
 
     function mouseUp(e: MouseEvent) {
       setIsDragging(false);
@@ -62,11 +67,11 @@ export function useMouseLocale(props: MouseProps) {
     document.addEventListener("mousemove", mouseMove, true);
 
     return () => {
-      props.ref.current!.removeEventListener("mousedown", mouseDown, true);
+      props.mainRef.current!.removeEventListener("mousedown", mouseDown, true);
       document.removeEventListener("mouseup", mouseUp, true);
       document.removeEventListener("mousemove", mouseMove, true);
     };
-  }, [props.ref, isDragging, offset]);
+  }, [props.mainRef, props.secondaryRef, isDragging, offset]);
 
   return mouse;
 }

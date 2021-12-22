@@ -14,6 +14,7 @@ export interface WindowComponentProps {
 
 function WindowComponent(props: WindowComponentProps) {
   const windowRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
   const [mouseData, setMouseData] = useState<MouseData>({
     x: props.x,
     y: props.y,
@@ -21,7 +22,8 @@ function WindowComponent(props: WindowComponentProps) {
   });
 
   const mouse = useMouseLocale({
-    ref: windowRef,
+    mainRef: titleRef,
+    secondaryRef: windowRef,
   });
 
   useEffect(() => {
@@ -44,8 +46,9 @@ function WindowComponent(props: WindowComponentProps) {
         left: `${mouseData.x}px`,
         top: `${mouseData.y}px`,
       }}
+      ref={windowRef}
     >
-      <div className={style.titleBar} ref={windowRef}>
+      <div className={style.titleBar} ref={titleRef}>
         {props.title}
         <span className={style.closeButton}>X</span>
       </div>
