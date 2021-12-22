@@ -54,6 +54,7 @@ function WindowComponent(props: WindowComponentProps) {
       className={classNames([
         style.window,
         { [style.selected]: props.primary },
+        { [style.onMove]: mouse.isDown },
       ])}
       style={{
         height: `${props.height}px`,
