@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useMouseLocale, MouseData } from "../hooks";
+import classNames from "classnames";
 import style from "./Window.module.css";
 
 export interface WindowComponentProps {
@@ -10,6 +11,9 @@ export interface WindowComponentProps {
   x: number;
   y: number;
   content: JSX.Element;
+  primary: boolean;
+  onFocus?: (pid: number) => void;
+  onClose?: (pid: number) => void;
 }
 
 function WindowComponent(props: WindowComponentProps) {
@@ -37,9 +41,20 @@ function WindowComponent(props: WindowComponentProps) {
     }
   }, [mouse]);
 
+  function onClickHandler() {
+    props.onFocus && props.onFocus(props.pid);
+  }
+
+  function onCloseHandler() {
+    props.onClose && props.onClose(props.pid);
+  }
+
   return (
     <div
-      className={style.window}
+      className={classNames([
+        style.window,
+        { [style.selected]: props.primary },
+      ])}
       style={{
         height: `${props.height}px`,
         width: `${props.width}px`,
@@ -47,11 +62,15 @@ function WindowComponent(props: WindowComponentProps) {
         top: `${mouseData.y}px`,
       }}
       ref={windowRef}
+      onClick={onClickHandler}
     >
       <div className={style.titleBar} ref={titleRef}>
         {props.title}
-        <span className={style.closeButton}>X</span>
+        <span onClick={onCloseHandler} className={style.closeButton}>
+          X
+        </span>
       </div>
+      <div className={style.content}>{props.content}</div>
     </div>
   );
 }

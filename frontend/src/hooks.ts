@@ -67,7 +67,12 @@ export function useMouseLocale(props: MouseProps) {
     document.addEventListener("mousemove", mouseMove, true);
 
     return () => {
-      props.mainRef.current!.removeEventListener("mousedown", mouseDown, true);
+      if (props.mainRef.current)
+        props.mainRef.current!.removeEventListener(
+          "mousedown",
+          mouseDown,
+          true
+        );
       document.removeEventListener("mouseup", mouseUp, true);
       document.removeEventListener("mousemove", mouseMove, true);
     };
