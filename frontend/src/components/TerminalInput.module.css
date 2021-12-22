@@ -1,0 +1,16 @@
+.shellInput {
+  display: flex;
+}
+
+.input {
+  width: 50%;
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 1rem;
+  font-family: "Fira Mono", monospace;
+}
+
+.input:focus {
+  outline: none;
+}
