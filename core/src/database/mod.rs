@@ -1,3 +1,6 @@
+pub mod links;
+pub mod models;
+
 use std::path::{Path, PathBuf};
 
 use sqlx::{migrate, sqlite::SqlitePoolOptions, Pool, Sqlite};
