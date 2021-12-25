@@ -33,7 +33,7 @@ pub async fn connect_database() -> DatabasePool {
 
     let pool = SqlitePoolOptions::new()
         .min_connections(1)
-        .max_connections(10)
+        .max_connections(5)
         .connect_lazy(file.to_str().unwrap())
         .unwrap();
 

@@ -13,7 +13,9 @@ sqlx = { version = "0.5.9", features = [
     "migrate",
 ] }
 
-tokio = { version = "1.15.0" }
+tokio = { version = "1.15.0", features = ["macros", "rt-multi-thread"] }
 serde = "1.0.132"
 sha2 = "0.10.0"
 base64 = "0.13.0"
+serenity = { version = "0.10.9" }
+dotenv = "0.15.0"

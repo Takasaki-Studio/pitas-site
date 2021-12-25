@@ -2,3 +2,5 @@
 /static
 /dist
 db/
+.env
+.vscode/
