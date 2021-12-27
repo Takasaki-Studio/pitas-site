@@ -1,7 +1,8 @@
+import { PrismaClient } from "@prisma/client";
 import { Client } from "discord.js";
 import { getCommands, handleCommand } from "./handler";
 
-async function startBot() {
+async function startBot(db: PrismaClient) {
   const client = new Client({
     intents: [],
   });
@@ -11,7 +12,7 @@ async function startBot() {
   client.on("interactionCreate", async (interaction) => {
     if (!interaction.isCommand()) return;
 
-    handleCommand(commands, interaction);
+    handleCommand(commands, interaction, db);
   });
 
   const token = process.env.DISCORD_TOKEN;

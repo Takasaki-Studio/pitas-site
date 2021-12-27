@@ -1,12 +1,14 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { REST } from "@discordjs/rest";
+import { PrismaClient } from "@prisma/client";
 import { Routes } from "discord-api-types/v9";
 import { CacheType, CommandInteraction, Interaction } from "discord.js";
 import glob from "glob";
 import npmlog from "npmlog";
 
 export type CommandExecultor = (
-  interaction: CommandInteraction
+  interaction: CommandInteraction,
+  db: PrismaClient
 ) => Promise<void>;
 
 export interface Command {
@@ -49,6 +51,7 @@ export async function getCommands() {
       const builder = new SlashCommandBuilder();
       builder.setName(cmd.name);
       const configuredBuild = cmd.cmdOptions(builder);
+      npmlog.log("info", "bot/handler", `Command ${cmd.name} loaded`);
       return configuredBuild.toJSON();
     });
 
@@ -77,7 +80,8 @@ export async function getCommands() {
 
 export async function handleCommand(
   commands: CommandHandled[],
-  interaction: Interaction<CacheType>
+  interaction: Interaction<CacheType>,
+  db: PrismaClient
 ) {
   const cmdInteraction = interaction as CommandInteraction;
   const command = commands.find(
@@ -85,5 +89,5 @@ export async function handleCommand(
   );
   if (!command) return;
 
-  command.executor(cmdInteraction);
+  command.executor(cmdInteraction, db);
 }

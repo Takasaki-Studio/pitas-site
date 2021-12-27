@@ -24,7 +24,7 @@ function main() {
   app.listen(port, () => {
     npmlog.log("info", "index", `Server listening on port ${port}`);
 
-    bot();
+    bot(db);
   });
 }
 
