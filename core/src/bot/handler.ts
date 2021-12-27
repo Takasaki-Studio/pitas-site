@@ -14,7 +14,7 @@ export type CommandExecultor = (
 export interface Command {
   name: string;
   execute: CommandExecultor;
-  cmdOptions: (builder: SlashCommandBuilder) => SlashCommandBuilder;
+  cmdOptions: (builder: SlashCommandBuilder) => unknown;
 }
 
 export interface CommandHandled {
@@ -50,7 +50,7 @@ export async function getCommands() {
     const commandsBuilded = commandsList.map((cmd) => {
       const builder = new SlashCommandBuilder();
       builder.setName(cmd.name);
-      const configuredBuild = cmd.cmdOptions(builder);
+      const configuredBuild = cmd.cmdOptions(builder) as SlashCommandBuilder;
       npmlog.log("info", "bot/handler", `Command ${cmd.name} loaded`);
       return configuredBuild.toJSON();
     });
@@ -72,8 +72,8 @@ export async function getCommands() {
       name: cmd.name,
       executor: cmd.execute,
     }));
-  } catch {
-    npmlog.error("bot/handler", "Error loading commands");
+  } catch (e) {
+    npmlog.error("bot/handler", "Error loading commands %s", e);
     return [];
   }
 }
