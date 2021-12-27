@@ -6,6 +6,7 @@ pub struct LinksDto {
     pub url: String,
 }
 
+#[derive(Debug)]
 pub struct Links {
     pub id: String,
     pub url: String,

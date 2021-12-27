@@ -19,3 +19,4 @@ sha2 = "0.10.0"
 base64 = "0.13.0"
 serenity = { version = "0.10.9" }
 dotenv = "0.15.0"
+log = "0.4.14"

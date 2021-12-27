@@ -31,3 +31,24 @@ pub async fn get(pool: &DatabasePool, id: &str) -> Option<Links> {
         Err(_) => None,
     }
 }
+
+pub async fn list(pool: &DatabasePool, limit: i64, page: i64) -> Vec<Links> {
+    let offset = page * limit;
+    let itens = sqlx::query_as("select * from links limit $1, $2")
+        .bind(offset)
+        .bind(limit)
+        .fetch_all(pool)
+        .await
+        .ok();
+
+    match itens {
+        Some(itens) => {
+            let mut links = Vec::with_capacity(itens.len());
+            for (id, url) in itens {
+                links.push(Links { id, url });
+            }
+            links
+        }
+        None => vec![],
+    }
+}

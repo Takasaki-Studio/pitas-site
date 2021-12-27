@@ -5,9 +5,11 @@ mod common;
 mod config;
 mod database;
 
-#[tokio::main]
-async fn main() {
+#[rocket::launch]
+async fn start() -> _ {
+    let db = database::connect_database().await;
+
     dotenv::dotenv().ok();
-    backend::run_http_server();
-    bot::start().await;
+    bot::start(db.clone());
+    backend::run(db).await
 }

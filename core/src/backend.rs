@@ -1,35 +1,26 @@
-use std::thread;
-
-use crate::{
-    common,
-    database::{self, links, models::LinksDto, DatabasePool},
-};
+use crate::database::{links, DatabasePool};
 
 use rocket::{
     fs::FileServer,
     get,
-    http::Status,
-    post,
     response::{status, Redirect},
-    routes,
-    serde::json::Json,
-    State,
+    routes, Build, Rocket, State,
 };
 
-#[post("/", data = "<data>")]
-async fn add_short_url(
-    pool: &State<DatabasePool>,
-    data: Json<LinksDto>,
-) -> Result<status::Created<String>, status::Custom<String>> {
-    let result = common::add_short_link((*data).clone(), pool).await;
-    match result {
-        Ok(id) => Ok(status::Created::new(format!("/{}", id)).tagged_body(id)),
-        Err(e) => Err(status::Custom(
-            Status::InternalServerError,
-            format!("{}", e),
-        )),
-    }
-}
+// #[post("/", data = "<data>")]
+// async fn add_short_url(
+//     pool: &State<DatabasePool>,
+//     data: Json<LinksDto>,
+// ) -> Result<status::Created<String>, status::Custom<String>> {
+//     let result = common::add_short_link((*data).clone(), pool).await;
+//     match result {
+//         Ok(id) => Ok(status::Created::new(format!("/{}", id)).tagged_body(id)),
+//         Err(e) => Err(status::Custom(
+//             Status::InternalServerError,
+//             format!("{}", e),
+//         )),
+//     }
+// }
 
 #[get("/<id>")]
 async fn trigger_link<'a>(
@@ -43,17 +34,11 @@ async fn trigger_link<'a>(
     }
 }
 
-#[rocket::launch]
-async fn run() -> _ {
-    let db_pool = database::connect_database().await;
+pub async fn run(db: DatabasePool) -> Rocket<Build> {
+    // let db_pool = database::connect_database().await;
 
     rocket::build()
-        .manage::<DatabasePool>(db_pool)
+        .manage::<DatabasePool>(db)
         .mount("/", FileServer::from("static"))
         .mount("/s", routes![trigger_link])
-        .mount("/api/links", routes![add_short_url])
-}
-
-pub fn run_http_server() {
-    thread::spawn(main);
 }
