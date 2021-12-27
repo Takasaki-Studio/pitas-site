@@ -47,6 +47,7 @@ const addShort: Command = {
         {
           title: "Short url created",
           description: `Id: ${shortUrl}`,
+          color: 53380,
         },
       ],
       ephemeral: true,
