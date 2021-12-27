@@ -6,6 +6,7 @@ import npmlog from "npmlog";
 import { PrismaClient } from "@prisma/client";
 
 import handler from "./handler";
+import bot from "./bot";
 
 function main() {
   dotenv.config();
@@ -22,6 +23,8 @@ function main() {
   const port = process.env.SERVER_PORT || 3000;
   app.listen(port, () => {
     npmlog.log("info", "index", `Server listening on port ${port}`);
+
+    bot();
   });
 }
 
