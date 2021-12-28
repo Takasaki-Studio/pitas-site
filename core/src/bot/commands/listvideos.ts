@@ -16,9 +16,11 @@ const listVideos: Command = {
 
     const videos = await list(page);
     const formatedVideos = videos.videos
-      .map((video) =>
-        video.length > 30 ? `${video.substring(0, 30)}...` : video
-      )
+      .map(({ video, index }) => {
+        const videoName =
+          video.length > 30 ? `${video.substring(0, 30)}...` : video;
+        return `${index}. ${videoName}`;
+      })
       .join("\n");
     interaction.reply({
       embeds: [

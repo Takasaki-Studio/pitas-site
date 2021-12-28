@@ -16,11 +16,23 @@ export async function download(url: string) {
 
 export async function list(page = 1) {
   const videos = await fs.readdir(videoFolder);
-  const videosFormated = videos.slice((page - 1) * 10, page * 10);
+  const videosFormated = videos
+    .map((video, index) => ({ video, index }))
+    .slice((page - 1) * 10, page * 10);
   return {
     videos: videosFormated,
     total: videos.length,
   };
+}
+
+export async function get(index: number): Promise<string | undefined> {
+  const videos = await fs.readdir(videoFolder);
+  const video = videos[index];
+  return video;
+}
+
+export async function remove(video: string) {
+  await fs.unlink(path.join(videoFolder, video));
 }
 
 export async function random() {
