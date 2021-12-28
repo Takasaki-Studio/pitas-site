@@ -47,8 +47,12 @@ export async function streaming(name: string, req: Request, res: Response) {
     const stats = await fs.stat(file);
     const { range } = req.headers;
     const { size } = stats;
-    const start = Number((range || "").replace(/bytes=/, "").split("-")[0]);
+    let start = Number((range || "").replace(/bytes=/, "").split("-")[0]);
     const end = size - 1;
+    if (start > end) {
+      start = 0;
+    }
+
     const chunksize = end - start + 1;
     res.set({
       "Content-Range": `bytes ${start}-${end}/${size}`,
