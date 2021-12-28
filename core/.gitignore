@@ -2,3 +2,5 @@ node_modules/
 dist/
 .vscode/
 yarn-error.log
+/bin
+/videos

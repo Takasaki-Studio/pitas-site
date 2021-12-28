@@ -11,9 +11,3 @@ model Links {
   id  String @id
   url String
 }
-
-model Videos {
-  id   String @id
-  file String @unique
-  mime String
-}

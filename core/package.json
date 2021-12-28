@@ -22,12 +22,14 @@
     "@discordjs/builders": "^0.10.0",
     "@discordjs/rest": "^0.2.0-canary.0",
     "@prisma/client": "^3.7.0",
+    "axios": "^0.24.0",
     "discord-api-types": "^0.26.0",
     "discord.js": "^13.4.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "glob": "^7.2.0",
     "helmet": "^4.6.0",
-    "npmlog": "^6.0.0"
+    "npmlog": "^6.0.0",
+    "youtube-dl-exec": "^2.0.2"
   }
 }
