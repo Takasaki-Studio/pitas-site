@@ -4,9 +4,11 @@ build:
 	- yarn --cwd core prisma migrate deploy
 	- mkdir -p dist
 	- mkdir -p dist/server
+	- mkdir -p dist/videos
 	- cp -r core/node_modules dist/server/node_modules
 	- cp -r core/dist/* dist/server/
-	- cp -r core/db dist/server
+	- mkdir -p dist/server/prisma
+	- cp -r core/prisma/db dist/server/prisma/db
 	- mkdir -p dist/static
 	- mkdir -p dist/bin
 	- yarn --cwd frontend

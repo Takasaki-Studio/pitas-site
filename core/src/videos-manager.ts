@@ -35,6 +35,7 @@ export async function remove(video: string) {
 
 export async function random() {
   const videos = await fs.readdir(videoFolder);
-  const randomIndex = Math.floor(Math.random() * videos.length);
-  return videos[randomIndex];
+  const formatedVideos = videos.filter((video) => video.endsWith(".mp4"));
+  const randomIndex = Math.floor(Math.random() * formatedVideos.length);
+  return formatedVideos[randomIndex];
 }
