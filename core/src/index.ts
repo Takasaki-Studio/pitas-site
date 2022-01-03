@@ -3,6 +3,7 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import path from "path";
 import npmlog from "npmlog";
+import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 
 import handler from "./handler";
@@ -12,9 +13,12 @@ function main() {
   dotenv.config();
 
   const staticPath = path.join(__dirname, "..", "static");
+  const videosPart = path.join(__dirname, "..", "videos");
   const app = express();
   app.use(helmet());
-  app.use(express.static(staticPath));
+  app.use(cors());
+  app.use("/videos", express.static(videosPart));
+  app.use("/", express.static(staticPath));
   app.use(express.json());
 
   const db = new PrismaClient();

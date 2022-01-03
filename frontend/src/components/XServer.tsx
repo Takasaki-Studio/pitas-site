@@ -26,8 +26,8 @@ function XServerComponent(
           pid: lastPid + 1,
           title: window.title,
           content: window.content,
-          height: 200,
-          width: 200,
+          height: 500,
+          width: 720,
           x: 150,
           y: 150,
           primary: false,
@@ -52,7 +52,6 @@ function XServerComponent(
 
   function onCloseHandler(pid: number) {
     const newWindows = windows.filter((window) => window.pid !== pid);
-    console.log(newWindows);
     setWindows(newWindows);
   }
 
