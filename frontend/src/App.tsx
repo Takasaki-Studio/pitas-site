@@ -70,7 +70,7 @@ function App() {
           {cmd.response && <span className={classNames(style.cmdOut, style.wrap)}>{cmd.response}</span>}
         </div>
       ))}
-      <TerminalInputComponent onCommand={addCommand} ref={inputTerminal} />
+      <TerminalInputComponent commands={commands} onCommand={addCommand} ref={inputTerminal} />
     </div>
   );
 }
