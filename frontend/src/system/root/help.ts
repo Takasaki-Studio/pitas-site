@@ -34,6 +34,7 @@ const commandList: Command[] = [
 
 const help: Execultor = (args, io) => {
   return commandList
+    .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
     .map((command) => `- ${command.name}: ${command.description}`)
     .join("\n");
 };
