@@ -15,10 +15,6 @@ const commandList: Command[] = [
     description: "Clears the console",
   },
   {
-    name: "exit",
-    description: "Closes the terminal",
-  },
-  {
     name: "echo",
     description: "Repeats what you type",
   },
