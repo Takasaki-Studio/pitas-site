@@ -7,7 +7,7 @@ const videos: Controller = () => {
 
   router.get("/random", async (req, res) => {
     const randomVideo = await random();
-    res.json({ video: randomVideo });
+    res.header("Cache-Control", "no-cache").json({ video: randomVideo });
   });
 
   return {
