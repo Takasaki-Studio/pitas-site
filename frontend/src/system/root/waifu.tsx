@@ -9,7 +9,7 @@ function Interface() {
     axios.get("/api/images/random").then((res) => {
       setImage(res.data.image)
     });
-  })
+  }, [])
 
   return (
     <img alt={image} src={`/images/${image}`} width={720} height={480} />
