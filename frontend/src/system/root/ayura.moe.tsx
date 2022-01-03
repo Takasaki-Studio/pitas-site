@@ -10,11 +10,11 @@ function AyuraMoe () {
   )
 }
 
-const test: Execultor = (args, cli) => {
+const Ayura_Moe: Execultor = (args, cli) => {
   cli.xserver({
     title: document.title,
     content: <AyuraMoe />
   })
 };
 
-export default test;
+export default Ayura_Moe;
