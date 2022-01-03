@@ -5,6 +5,7 @@ build:
 	- mkdir -p dist
 	- mkdir -p dist/server
 	- mkdir -p dist/videos
+	- mkdir -p dist/images
 	- cp -r core/node_modules dist/server/node_modules
 	- cp -r core/dist/* dist/server/
 	- mkdir -p dist/server/prisma
