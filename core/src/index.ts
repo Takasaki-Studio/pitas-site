@@ -14,10 +14,12 @@ function main() {
 
   const staticPath = path.join(__dirname, "..", "static");
   const videosPart = path.join(__dirname, "..", "videos");
+  const imagesPart = path.join(__dirname, "..", "images");
   const app = express();
   app.use(helmet());
   app.use(cors());
   app.use("/videos", express.static(videosPart));
+  app.use("/images", express.static(imagesPart));
   app.use("/", express.static(staticPath));
   app.use(express.json());
 
