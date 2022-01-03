@@ -6,6 +6,8 @@ import XServerComponent, {
 } from "./components/XServer";
 import shell from "./system/shell";
 import style from "./App.module.css";
+import classNames from "classnames";
+
 const initialText = `
     /\\
    /  \\  _   _ _   _ _ __ __ _
@@ -65,7 +67,7 @@ function App() {
       {commands.map((cmd, index) => (
         <div key={index}>
           <TerminalInputComponent>{cmd.command}</TerminalInputComponent>
-          {cmd.response && <span className={style.cmdOut}>{cmd.response}</span>}
+          {cmd.response && <span className={classNames(style.cmdOut, style.wrap)}>{cmd.response}</span>}
         </div>
       ))}
       <TerminalInputComponent onCommand={addCommand} ref={inputTerminal} />
