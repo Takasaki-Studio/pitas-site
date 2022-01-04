@@ -24,39 +24,28 @@ function TerminalInputComponent(
   }, [props.commands]);
 
   function handleOnKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    function handleArrowEvent(type: "ArrowUp" | "ArrowDown"): string {
-      let returnString = "";
-
+    if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+      event.preventDefault();
       if ((props.commands?.length as number) > 0) {
-        returnString = props.commands![lastCommandIndex].command;
+        event.currentTarget.value = props.commands![lastCommandIndex].command;
       }
 
-      if (type === "ArrowUp") {
+      event.currentTarget.selectionEnd = event.currentTarget.value.length;
+
+      if (event.key === "ArrowUp") {
         if (lastCommandIndex - 1 < 0) {
           setLastCommandIndex(0);
         } else {
           setLastCommandIndex(lastCommandIndex - 1);
         }
-      } else if (type === "ArrowDown") {
+      } else if (event.key === "ArrowDown") {
         if (lastCommandIndex + 1 > (props.commands?.length as number) - 1) {
           setLastCommandIndex((props.commands?.length as number) - 1);
         } else {
           setLastCommandIndex(lastCommandIndex + 1);
         }
       }
-
-      return returnString;
-    }
-
-    if (event.key === "ArrowUp") {
-      event.currentTarget.value = handleArrowEvent("ArrowUp");
-    }
-
-    if (event.key === "ArrowDown") {
-      event.currentTarget.value = handleArrowEvent("ArrowDown");
-    }
-
-    if (event.key === "Enter") {
+    } else if (event.key === "Enter") {
       const command = event.currentTarget.value;
       if (props.onCommand) {
         props.onCommand(command);
