@@ -1,5 +1,6 @@
 import npmlog from "npmlog";
 import { download } from "../../images-manager";
+import PitasError from "../../PitasError";
 import { Command } from "../handler";
 
 const pitasgay: Command = {
@@ -48,11 +49,25 @@ const pitasgay: Command = {
         ephemeral: true,
       });
     } catch (e) {
-      npmlog.error("commands/addvideo", "Error while downloading video", e);
+      if (e instanceof PitasError) {
+        interaction.followUp({
+          embeds: [
+            {
+              title: "Error while downloading image",
+              description: e.message,
+              color: 15406156,
+            },
+          ],
+          ephemeral: true,
+        });
+
+        return;
+      }
+      npmlog.error("commands/addimage", "Error while downloading image", e);
       interaction.followUp({
         embeds: [
           {
-            title: "Error while downloading video",
+            title: "Error while downloading image",
             description: "Please check url and try again",
             color: 15406156,
           },
