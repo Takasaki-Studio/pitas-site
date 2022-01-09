@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "author": "Takasakiii",
   "dependencies": {
     "@types/node": "^16.7.13",
     "@types/react": "^17.0.20",
